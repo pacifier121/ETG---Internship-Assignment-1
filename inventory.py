@@ -30,10 +30,16 @@ try:
     inv = json.loads(txt)
     file.close()
 
-    saveFile = open('transactions.json', 'r')
-    saveTxt = saveFile.read()
-    trans = json.loads(saveFile)
-    saveFile.close()
+    try:    
+        saveFile = open('transactions.json', 'r')
+        saveTxt = saveFile.read()
+        trans = json.loads(saveTxt)
+        saveFile.close()
+    except Exception:
+        saveFile = open('transactions.json', 'w')
+        trans = {'lastTransactionId' : "100000"}
+        initialData = json.dumps(trans)
+        saveFile.write(initialData)
     
 except Exception:
     inv = startInventory()
@@ -42,10 +48,6 @@ except Exception:
     file.write(js)
     file.close()
 
-    saveFile = open('transactions.json', 'w')
-    trans = {'lastTransactionId' : 100000}
-    initialData = json.dumps(trans)
-    saveFile.write(initialData)
 
 while True:
     print("Enter what you want to do : ")
@@ -53,6 +55,7 @@ while True:
     print("2. Purchase an item")
     print("3. Search for a product with it's\n\ta) Name\n\tb) Brand \n\tc) Category\n\t(Enter 3 immediately followed by letter)")
     print("4. Display transaction history")
+    print("Enter 'exit' to quit")
     cmd = input()
     if (cmd == "1"):
         line = "{:15}{:20}{:20}{:20}{:10}{:10}".format("Product ID", "Product Name", "Category", "Brand", "Price", "Quantity")
